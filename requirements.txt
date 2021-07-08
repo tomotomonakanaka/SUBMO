@@ -7,3 +7,4 @@ dgl-cu102
 # dgl # if no gpu
 dgllife
 matplotlib
+seaborn

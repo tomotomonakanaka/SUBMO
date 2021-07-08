@@ -76,5 +76,5 @@ def eval_one_epoch(loader, gnn_net, loss_fn, task, model_name, data_len,
             df = greedy_baseline(df, percentage, rule='maxsum')
             df = greedy_baseline(df, percentage, rule='maxmin')
             with open('save_pickle/' + task + '_' + model_name + '_' + task_str
-                      + '_' + 'predicted_data.pickle', 'wb') as f:
+                      + '_' + 'predicted_data.p', 'wb') as f:
                 pickle.dump(df, f)

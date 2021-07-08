@@ -85,14 +85,14 @@ if __name__ == "__main__":
         # load data
         if args.use_saved_data:
             with open('save_pickle/' + task + '_' + features_name + '_' +
-                      'data.pickle', 'rb') as f:
+                      'data.p', 'rb') as f:
                 data_dict[task] = pickle.load(f)
         # save data
         else:
             data_dict[task] = make_data(task, atom_featurizer, edge_featurizer,
                                         batch_size=args.batch_size)
             with open('save_pickle/' + task + '_' + features_name + '_' +
-                      'data.pickle', 'wb') as f:
+                      'data.p', 'wb') as f:
                 pickle.dump(data_dict[task], f)
 
     # task dim
@@ -140,7 +140,7 @@ if __name__ == "__main__":
     # save model
     if args.save_model:
         torch.save(gnn_net, "save_pickle/" + task_str + '_' + args.model
-                   + "_model.pickle")
+                   + "_model.p")
 
     # evaluation
     for task in args.tasks:

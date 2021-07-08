@@ -3,6 +3,7 @@ tensorflow==2.3.0
 torch 
 torchvision
 torchaudio
-dgl # depending on device
+dgl-cu102
+# dgl # if no gpu
 dgllife
 matplotlib

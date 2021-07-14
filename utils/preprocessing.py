@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pickle
 import dgl
 import torch
 import deepchem as dc
@@ -94,6 +95,8 @@ def make_qm9_dataframe(divide=False):
     train_df = train_df.reset_index(drop=True)
     valid_df = valid_df.reset_index(drop=True)
     test_df = test_df.reset_index(drop=True)
+
+    pickle.dump(train_df, open( "./save_pickle/raw_train_df.p", "wb" ))
 
     for task in tasks:
         mean = train_df[task].mean()

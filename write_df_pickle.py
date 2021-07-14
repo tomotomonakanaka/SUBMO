@@ -49,6 +49,7 @@ for task_name in df:
         df[task_name][num]['h298/Nelec'] = df[task_name][num]['h298'] / df[task_name][num]['Nelec']
         df[task_name][num]['g298/Nelec'] = df[task_name][num]['g298'] / df[task_name][num]['Nelec']
         df[task_name][num]['cv/3n-6'] = df[task_name][num].apply(lambda x: x['cv'] / (3 * get_natom(x['mols']) - 6), axis = 1)
+        df[task_name][num]['zpve/3n-6'] = df[task_name][num].apply(lambda x: x['zpve'] / (3 * get_natom(x['mols']) - 6), axis = 1)
 
 
 # calculate MACCS Key and ECFP

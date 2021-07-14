@@ -6,6 +6,7 @@ import deepchem as dc
 from rdkit import Chem
 from torch.utils.data import DataLoader
 from dgllife.utils import smiles_to_bigraph
+from utils.calc_chem import get_natom, get_nelec
 
 
 def graph_featurizer(smiles, atom_featurizer, edge_featurizer, with_H):
@@ -37,7 +38,7 @@ def make_dataframe(dataset):
     return dataframe_dropna
 
 
-def make_qm9_dataframe():
+def make_qm9_dataframe(divide=False):
     tasks = [
        "mu", "alpha", "homo", "lumo", "gap", "r2", "zpve", "u0", "u298",
        "h298", "g298", "cv"
@@ -74,6 +75,15 @@ def make_qm9_dataframe():
         df[task] = qm9_df[task]
     df['mols'] = qm9_df.mols
     df['smiles'] = qm9_df.cano_smiles
+
+    if divide==True:
+        Nelecs = df['mols'].apply(get_nelec)
+        df['zpve'] = df.apply(lambda x: x['zpve'] / (3 * get_natom(x['mols']) - 6), axis = 1)
+        df['u0'] = df['u0'] / Nelecs
+        df['u298'] = df['u298'] / Nelecs
+        df['h298'] = df['h298'] / Nelecs
+        df['g298'] = df['g298'] / Nelecs
+        df['cv'] = df.apply(lambda x: x['cv'] / (3 * get_natom(x['mols']) - 6), axis = 1)
 
     # train, valid, test split
     random_seed = 888
@@ -123,6 +133,8 @@ def make_data(arg_tasks, atom_featurizer, edge_featurizer, batch_size=128,
 
     if arg_tasks == 'qm9':
         train_dataframe, valid_dataframe, test_dataframe = make_qm9_dataframe()
+    elif arg_tasks == 'qm9_divide':
+        train_dataframe, valid_dataframe, test_dataframe = make_qm9_dataframe(divide=True)
     else:
         train_dataset, valid_dataset, test_dataset = datasets
         # make dataframe

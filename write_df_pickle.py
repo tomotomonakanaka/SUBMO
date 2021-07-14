@@ -25,16 +25,16 @@ for task_name in tasks:
 
 
 # calculate real values for qm9 properties
-with open('./save_pickle/qm9_atom_edge_data.p', 'rb') as f:
-    processed = pickle.load(f)
+with open('./save_pickle/raw_train_df.p', 'rb') as f:
+    raw_train_df = pickle.load(f)
 
 for task_name in df:
     for num in nums:
         for prop in df[task_name][num].columns:
             if prop == 'mols':
                 break
-            mean = processed[0][prop].mean()
-            std = processed[0][prop].std()
+            mean = raw_train_df[prop].mean()
+            std = raw_train_df[prop].std()
             df[task_name][num]['pred ' + prop] = df[task_name][num]['pred ' + prop]*std + mean
             df[task_name][num][prop] = df[task_name][num][prop]*std + mean
 

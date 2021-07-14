@@ -95,6 +95,8 @@ if __name__ == "__main__":
                       'data.p', 'wb') as f:
                 pickle.dump(data_dict[task], f)
 
+    print('Done preprocess')
+
     # task dim
     # ncls = {'delaney':1, ...}
     ncls = {}

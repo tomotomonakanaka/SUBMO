@@ -1,5 +1,7 @@
 # SUBMO
 ## Setup
+The required modules can be obtained by the following commands.
+For torch and dgl installation, change the contents of the `requirements.txt` file according to your environment.
 ```
 $ conda install -y -c conda-forge rdkit
 $ pip install -r requirements.txt
@@ -22,4 +24,4 @@ If you run the following script, you can train the GNN and select the diverse mo
 $ ./experiment/run_experiment.sh
 ```
 
-The results can be seen on `eval_wdud_mpd.ipynb`.
+The results can be seen by running the cells in `eval_wdud_mpd.ipynb`.

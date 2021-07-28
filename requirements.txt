@@ -1,6 +1,3 @@
-numpy
-pandas
-matplotlib
 sklearn
 seaborn
 tensorflow==2.3.0

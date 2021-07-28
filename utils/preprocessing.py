@@ -3,7 +3,7 @@ import pandas as pd
 import pickle
 import dgl
 import torch
-import deepchem as dc
+# import deepchem as dc
 from rdkit import Chem
 from torch.utils.data import DataLoader
 from dgllife.utils import smiles_to_bigraph
@@ -127,12 +127,12 @@ def make_dataloader(dataframe, task_name, graphs, batch_size=128,
 def make_data(arg_tasks, atom_featurizer, edge_featurizer, batch_size=128,
               shuffle=True):
     with_H = False
-    if arg_tasks == 'delaney':  # ESOL regression
-        tasks, datasets, transformers = dc.molnet.load_delaney(reload=False)
-    if arg_tasks == 'sampl':  # FreeSolv regression
-        tasks, datasets, transformers = dc.molnet.load_sampl(reload=False)
-    if arg_tasks == 'lipo':  # Lipop regression
-        tasks, datasets, transformers = dc.molnet.load_lipo(reload=False)
+    # if arg_tasks == 'delaney':  # ESOL regression
+    #     tasks, datasets, transformers = dc.molnet.load_delaney(reload=False)
+    # if arg_tasks == 'sampl':  # FreeSolv regression
+    #     tasks, datasets, transformers = dc.molnet.load_sampl(reload=False)
+    # if arg_tasks == 'lipo':  # Lipop regression
+    #     tasks, datasets, transformers = dc.molnet.load_lipo(reload=False)
 
     if arg_tasks == 'qm9':
         train_dataframe, valid_dataframe, test_dataframe = make_qm9_dataframe()

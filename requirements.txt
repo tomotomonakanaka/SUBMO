@@ -1,7 +1,7 @@
 tensorflow==2.3.0
 torch==1.8.0 # Depending on device
 dgl-cu100==0.5.3 # For CUDA 10.0
-# dgl # For CUDA
+# dgl # For CPU
 # dgl-cu90 # For CUDA 9.0
 # dgl-cu92 # For CUDA 10.0
 # dgl-cu101 # For CUDA 10.1

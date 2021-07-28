@@ -1,3 +1,8 @@
+numpy
+pandas
+matplotlib
+sklearn
+seaborn
 tensorflow==2.3.0
 torch==1.8.0 # Depending on device
 dgl-cu100==0.5.3 # For CUDA 10.0
@@ -6,4 +11,3 @@ dgl-cu100==0.5.3 # For CUDA 10.0
 # dgl-cu92 # For CUDA 10.0
 # dgl-cu101 # For CUDA 10.1
 dgllife==0.2.6
-seaborn

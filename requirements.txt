@@ -1,13 +1,11 @@
-numpy
-pandas
-matplotlib
 sklearn
 seaborn
 tensorflow==2.3.0
 torch==1.8.0 # Depending on device
 dgl-cu100==0.5.3 # For CUDA 10.0
-# dgl # For CUDA
-# dgl-cu90 # For CUDA 9.0
-# dgl-cu92 # For CUDA 10.0
-# dgl-cu101 # For CUDA 10.1
+# dgl==0.5.3 # For CUDA
+# dgl-cu90==0.5.3 # For CUDA 9.0
+# dgl-cu92==0.5.3 # For CUDA 10.0
+# dgl-cu101==0.5.3 # For CUDA 10.1
+# dgl-cu102==0.5.3 # For CUDA 10.2 and 11
 dgllife==0.2.6

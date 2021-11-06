@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import pickle
 from utils.algorithms import greedy_logdet_max, greedy_baseline
+import time
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
@@ -72,9 +73,16 @@ def eval_one_epoch(loader, gnn_net, loss_fn, task, model_name, data_len,
             eval_dataset[pred_names] = pd.DataFrame(preds)
             eval_dataset['embedding'] = list(embeddings)
             df = eval_dataset
+            time_SG = time.time()
             df = greedy_logdet_max(df, percentage)
+            time_MSG = time.time()
+            print('timeSG', time_MSG-time_SG)
             df = greedy_baseline(df, percentage, rule='maxsum')
+            time_MMG = time.time()
+            print('timeMSG', time_MMG-time_MSG)
             df = greedy_baseline(df, percentage, rule='maxmin')
+            time_end = time.time()
+            print('timeMMG', time_end-time_MMG)
             with open('save_pickle/' + task + '_' + model_name + '_' + task_str
                       + '_' + 'predicted_data.p', 'wb') as f:
                 pickle.dump(df, f)

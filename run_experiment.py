@@ -7,6 +7,7 @@ from dgllife.utils import CanonicalAtomFeaturizer, CanonicalBondFeaturizer
 from model.gnn_models import GNNMultitask
 from utils.preprocessing import make_data
 from utils.train_and_test import train_one_epoch, eval_one_epoch
+import time
 
 
 def parse_args():
@@ -131,6 +132,7 @@ if __name__ == "__main__":
     loss_fn = torch.nn.MSELoss()
 
     # train
+    time_s = time.time()
     for epoch in range(1, args.epoch + 1):
         for task in args.tasks:
             train_one_epoch(data_dict[task][3], gnn_net, loss_fn, optimizer,
@@ -138,6 +140,8 @@ if __name__ == "__main__":
             if epoch % 10 == 0:
                 eval_one_epoch(data_dict[task][4], gnn_net, loss_fn, task,
                                args.model, len(data_dict[task][1]))
+    time_e = time.time()
+    print('****time train GNN****:', time_e-time_s)
 
     # save model
     if args.save_model:

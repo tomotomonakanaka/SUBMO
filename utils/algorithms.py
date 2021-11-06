@@ -138,3 +138,48 @@ def calculate_all_pairs_dissimilarity(fingerprints, similarity='Tanimoto', optio
     elif option == 'min':
         ave_sim = sum_sim / n
     return ave_sim
+
+
+def greedy_wasserstein(df, percentage=None, is_pred=True):
+    if is_pred: 
+        props = ['pred mu', 'pred alpha', 'pred homo', 'pred lumo', 'pred gap', 'pred r2', 'pred zpve', 'pred u0', 'pred u298', 'pred h298', 'pred g298', 'pred cv']
+    else:
+        props = ['mu', 'alpha', 'homo', 'lumo', 'gap', 'r2', 'zpve', 'u0', 'u298', 'h298', 'g298', 'cv']
+    X = df.loc[:, props].values
+    X = X - np.tile(np.min(X,0), (len(X),1))
+    X = X / np.tile(np.max(X,0), (len(X),1))
+
+    def cdf_wdud_norm(values, vmin=0, vmax=1):
+        n = len(values)
+        vrange = vmax - vmin
+        values = np.append(values, vmin)
+        values = np.append(values, vmax)
+        values = np.sort(values)
+
+        ans = 0
+        for j in range(n+1):
+            l, u = values[j], values[j+1]
+            x = min(u, max(l, vmin + vrange * j / n))
+            ans += (x - l) * (j / n + vmin / vrange - .5 * (x + l) / vrange) 
+            ans += (u - x) * (- j / n - vmin / vrange + .5 * (u + x) / vrange) 
+        return ans
+
+    n = len(X)
+    k = n if percentage is None else int(n*percentage)    
+
+    Z = list(range(n))
+    rank = []
+    while len(rank) < k:
+        minval = np.inf
+        for j in Z:
+            ave_wdud = np.mean([cdf_wdud_norm(X[rank + [j],i]) for i in range(X.shape[1])])
+            if ave_wdud <= minval:
+                minval, minelm = ave_wdud, j
+        rank.append(minelm)
+        Z.remove(j)
+
+    rank = np.append(rank, Z)
+    df['wgreedy_ranking'] = np.argsort(rank)
+    df.loc[df['wgreedy_ranking'] >= k, 'wgreedy_ranking'] = len(df)
+
+    return df

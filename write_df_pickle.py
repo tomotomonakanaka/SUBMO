@@ -1,9 +1,10 @@
 from rdkit import rdBase
 from rdkit.Chem import AllChem
 import pickle
-from utils.algorithms import greedy_baseline
+from utils.algorithms import greedy_baseline, greedy_wasserstein
 import numpy as np
 from utils.calc_chem import get_natom, get_nelec
+import time
 print(rdBase.rdkitVersion)
 
 # setting
@@ -62,12 +63,25 @@ for task_name in df:
         df[task_name][num]['ecfp'] = ecfp
 
 # selection using Tanimoto Coefficients
+time_MSMK = time.time()
+df['qm9']['_1'] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxsum', vector='_maccs')
+time_MMMK = time.time()
+df['qm9']['_1'] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxmin', vector='_maccs')
+time_MSEF = time.time()
+df['qm9']['_1'] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxsum', vector='_ecfp')
+time_MMEF = time.time()
+df['qm9']['_1'] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxmin', vector='_ecfp')
+time_bs = time.time()
+print('MSMK', time_MMMK-time_MSMK)
+print('MMMK', time_MSEF-time_MMMK)
+print('MSEF', time_MMEF-time_MSEF)
+print('MMEF', time_bs-time_MMEF)
 for task_name in df:
     for num in nums:
-        df[task_name][num] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxsum', vector='_maccs')
-        df[task_name][num] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxmin', vector='_maccs')
-        df[task_name][num] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxsum', vector='_ecfp')
-        df[task_name][num] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxmin', vector='_ecfp')
+        time_WS = time.time()
+        df[task_name][num] = greedy_wasserstein(df[task_name][num], 0.01)
+        time_end = time.time()
+        print('Wasser', time_end-time_WS)
 
 
 # add random ranking
@@ -83,4 +97,4 @@ for num in nums:
         df[task_name][num]['random_ranking'] = random_rank
 
 # save
-pickle.dump(df, open( "./save_pickle/result_df.p", "wb" ))
+pickle.dump(df, open( "./save_pickle/result_df_wasserstein.p", "wb" ))

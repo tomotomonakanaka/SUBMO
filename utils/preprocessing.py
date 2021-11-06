@@ -1,6 +1,8 @@
+from dgllife.utils.splitters import train_val_test_sanity_check
 import numpy as np
 import pandas as pd
 import pickle
+import copy
 import dgl
 import torch
 # import deepchem as dc
@@ -125,7 +127,7 @@ def make_dataloader(dataframe, task_name, graphs, batch_size=128,
 
 
 def make_data(arg_tasks, atom_featurizer, edge_featurizer, batch_size=128,
-              shuffle=True):
+              shuffle=True, train_all=False):
     with_H = False
     # if arg_tasks == 'delaney':  # ESOL regression
     #     tasks, datasets, transformers = dc.molnet.load_delaney(reload=False)
@@ -144,6 +146,10 @@ def make_data(arg_tasks, atom_featurizer, edge_featurizer, batch_size=128,
         train_dataframe = make_dataframe(train_dataset)
         valid_dataframe = make_dataframe(valid_dataset)
         test_dataframe = make_dataframe(test_dataset)
+
+    if train_all == True:
+        train_dataframe = pd.concat([train_dataframe, valid_dataframe, test_dataframe])
+        test_dataframe = copy.copy(train_dataframe)
 
     # convert mols to graphs with feature
     train_graphs = graph_featurizer(train_dataframe.smiles, atom_featurizer,

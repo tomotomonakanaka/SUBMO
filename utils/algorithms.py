@@ -179,7 +179,10 @@ def greedy_wasserstein(df, percentage=None, is_pred=True):
         Z.remove(minelm)
 
     rank = np.append(rank, Z)
-    df['wgreedy_ranking'] = np.argsort(rank)
-    df.loc[df['wgreedy_ranking'] >= k, 'wgreedy_ranking'] = len(df)
-
+    if is_pred:
+        df['wgreedy_ranking'] = np.argsort(rank)
+        df.loc[df['wgreedy_ranking'] >= k, 'wgreedy_ranking'] = len(df)
+    else:
+        df['wgreedy_truth_ranking'] = np.argsort(rank)
+        df.loc[df['wgreedy_truth_ranking'] >= k, 'wgreedy_truth_ranking'] = len(df)
     return df

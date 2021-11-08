@@ -176,7 +176,7 @@ def greedy_wasserstein(df, percentage=None, is_pred=True):
             if ave_wdud <= minval:
                 minval, minelm = ave_wdud, j
         rank.append(minelm)
-        Z.remove(j)
+        Z.remove(minelm)
 
     rank = np.append(rank, Z)
     df['wgreedy_ranking'] = np.argsort(rank)

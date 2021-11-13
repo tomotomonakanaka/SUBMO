@@ -86,3 +86,45 @@ def eval_one_epoch(loader, gnn_net, loss_fn, task, model_name, data_len,
             with open('save_pickle/' + task + '_' + model_name + '_' + task_str
                       + '_' + 'predicted_data.p', 'wb') as f:
                 pickle.dump(df, f)
+
+def smiles_to_embeddings(loaders, gnn_net, task_trained, task_targeted,
+                         model_name, df, task_names, percentage=0.2):
+    gnn_net.eval()
+    embeddings = None
+    for loader in loaders:
+        for bg, labels in loader:
+            atom_feats = bg.ndata.pop('h').to(device)
+            if model_name == 'gcn':
+                pred, embedding = gnn_net(bg, atom_feats, task_trained)
+            else:
+                edge_feats = bg.edata.pop('e').to(device)
+                pred, embedding = gnn_net(bg, atom_feats, task_targeted, edge_feats=edge_feats)
+            pred = pred.reshape([pred.shape[0], -1])
+
+            # prediction, ground-truth, embedding
+            pred_cpu = pred.detach().to('cpu').numpy()
+            embedding_cpu = embedding.detach().to('cpu').numpy()
+            if embeddings is None:
+                preds = pred_cpu
+                embeddings = embedding_cpu
+            else:
+                preds = np.append(preds, pred_cpu, axis=0)
+                embeddings = np.append(embeddings, embedding_cpu, axis=0)
+
+    # save embeddings
+    pred_names = ['pred ' + name for name in task_names]
+    df[pred_names] = pd.DataFrame(preds)
+    df['embedding'] = list(embeddings)
+    time_SG = time.time()
+    df = greedy_logdet_max(df, percentage)
+    time_MSG = time.time()
+    print('timeSG', time_MSG-time_SG)
+    df = greedy_baseline(df, percentage, rule='maxsum')
+    time_MMG = time.time()
+    print('timeMSG', time_MMG-time_MSG)
+    df = greedy_baseline(df, percentage, rule='maxmin')
+    time_end = time.time()
+    print('timeMMG', time_end-time_MMG)
+    with open('save_pickle/' + task_targeted + '_' + model_name + '_' +
+              task_trained + '_data.pickle', 'wb') as f:
+        pickle.dump(df, f)

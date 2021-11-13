@@ -52,7 +52,7 @@ if __name__ == "__main__":
         # load data
         if args.use_saved_data:
             with open('save_pickle/' + task + '_' + features_name + '_' +
-                      'eval_data.pickle', 'rb') as f:
+                      'eval_data.p', 'rb') as f:
                 data_dict[task] = pickle.load(f)
         # save data
         else:
@@ -60,12 +60,12 @@ if __name__ == "__main__":
                                         edge_featurizer, batch_size=64,
                                         shuffle=False)
             with open('save_pickle/' + task + '_' + features_name + '_' +
-                      'eval_data.pickle', 'wb') as f:
+                      'eval_data.p', 'wb') as f:
                 pickle.dump(data_dict[task], f)
 
     # load model
     gnn_net = torch.load("save_pickle/" + args.task_trained + '_' + args.model
-                         + "_model.pickle")
+                         + "_model.p")
 
     for task in args.task_targeted:
         df = pd.concat([data_dict[task][0], data_dict[task][1],

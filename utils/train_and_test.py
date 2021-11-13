@@ -95,10 +95,10 @@ def smiles_to_embeddings(loaders, gnn_net, task_trained, task_targeted,
         for bg, labels in loader:
             atom_feats = bg.ndata.pop('h').to(device)
             if model_name == 'gcn':
-                pred, embedding = gnn_net(bg, atom_feats, task_trained)
+                pred, embedding = gnn_net(bg, atom_feats, 'qm9')
             else:
                 edge_feats = bg.edata.pop('e').to(device)
-                pred, embedding = gnn_net(bg, atom_feats, task_trained, edge_feats=edge_feats)
+                pred, embedding = gnn_net(bg, atom_feats, 'qm9', edge_feats=edge_feats)
             pred = pred.reshape([pred.shape[0], -1])
 
             # prediction, ground-truth, embedding

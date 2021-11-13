@@ -98,7 +98,7 @@ def smiles_to_embeddings(loaders, gnn_net, task_trained, task_targeted,
                 pred, embedding = gnn_net(bg, atom_feats, task_trained)
             else:
                 edge_feats = bg.edata.pop('e').to(device)
-                pred, embedding = gnn_net(bg, atom_feats, task_targeted, edge_feats=edge_feats)
+                pred, embedding = gnn_net(bg, atom_feats, task_trained, edge_feats=edge_feats)
             pred = pred.reshape([pred.shape[0], -1])
 
             # prediction, ground-truth, embedding

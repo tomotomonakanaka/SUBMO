@@ -9,6 +9,7 @@ print(rdBase.rdkitVersion)
 
 # setting
 tasks = ['delaney', 'sampl', 'lipo']
+percentages = {'delaney': 0.1, 'sampl': 0.2, 'lipo':0.025}
 model_name = '_attentivefp_'
 nums = ['_1', '_2', '_3', '_4', '_5']
 props = ['mu', 'alpha', 'homo', 'lumo', 'gap', 'r2', 'zpve', 'u0', 'u298', 'h298', 'g298', 'cv']
@@ -49,13 +50,13 @@ for task_name in df:
 # selection using Tanimoto Coefficients
 for task_name in df:
     time_MSMK = time.time()
-    df[task_name]['_1'] = greedy_baseline(df[task_name]['_1'], 0.1, 'Tanimoto', rule='maxsum', vector='_maccs')
+    df[task_name]['_1'] = greedy_baseline(df[task_name]['_1'], percentages[task_name], 'Tanimoto', rule='maxsum', vector='_maccs')
     time_MMMK = time.time()
-    df[task_name]['_1'] = greedy_baseline(df[task_name]['_1'], 0.1, 'Tanimoto', rule='maxmin', vector='_maccs')
+    df[task_name]['_1'] = greedy_baseline(df[task_name]['_1'], percentages[task_name], 'Tanimoto', rule='maxmin', vector='_maccs')
     time_MSEF = time.time()
-    df[task_name]['_1'] = greedy_baseline(df[task_name]['_1'], 0.1, 'Tanimoto', rule='maxsum', vector='_ecfp')
+    df[task_name]['_1'] = greedy_baseline(df[task_name]['_1'], percentages[task_name], 'Tanimoto', rule='maxsum', vector='_ecfp')
     time_MMEF = time.time()
-    df[task_name]['_1'] = greedy_baseline(df[task_name]['_1'], 0.1, 'Tanimoto', rule='maxmin', vector='_ecfp')
+    df[task_name]['_1'] = greedy_baseline(df[task_name]['_1'], percentages[task_name], 'Tanimoto', rule='maxmin', vector='_ecfp')
     time_bs = time.time()
     print(task_name)
     print('MSMK', time_MMMK-time_MSMK)
@@ -66,7 +67,7 @@ for task_name in df:
 for task_name in df:
     for num in nums:
         time_WS = time.time()
-        df[task_name][num] = greedy_wasserstein(df[task_name][num], 0.1)
+        df[task_name][num] = greedy_wasserstein(df[task_name][num], percentages[task_name])
         time_end = time.time()
         print(task_name)
         print('Wasser', time_end-time_WS)
@@ -75,7 +76,7 @@ for task_name in df:
 # add random ranking
 for task_name in df:
     n_mols = len(df[task_name]['_1'])
-    n_select = int(n_mols*0.1)
+    n_select = int(n_mols*percentages[task_name])
     for num in nums:
         select = np.random.choice(range(n_mols), n_select, replace = False)
         random_rank = np.ones(n_mols) * n_mols

@@ -8,7 +8,7 @@ import time
 print(rdBase.rdkitVersion)
 
 # setting
-tasks = ['delaney']
+tasks = ['delaney', 'sampl', 'lipo']
 model_name = '_attentivefp_'
 nums = ['_1', '_2', '_3', '_4', '_5']
 props = ['mu', 'alpha', 'homo', 'lumo', 'gap', 'r2', 'zpve', 'u0', 'u298', 'h298', 'g298', 'cv']
@@ -57,6 +57,7 @@ for task_name in df:
     time_MMEF = time.time()
     df[task_name]['_1'] = greedy_baseline(df[task_name]['_1'], 0.1, 'Tanimoto', rule='maxmin', vector='_ecfp')
     time_bs = time.time()
+    print(task_name)
     print('MSMK', time_MMMK-time_MSMK)
     print('MMMK', time_MSEF-time_MMMK)
     print('MSEF', time_MMEF-time_MSEF)
@@ -67,6 +68,7 @@ for task_name in df:
         time_WS = time.time()
         df[task_name][num] = greedy_wasserstein(df[task_name][num], 0.1)
         time_end = time.time()
+        print(task_name)
         print('Wasser', time_end-time_WS)
 
 
@@ -84,4 +86,4 @@ for task_name in df:
             df[task_name][num]['random_ranking'] = random_rank
 
 # save
-pickle.dump(df, open( "./save_pickle/result_df_delaney.p", "wb" ))
+pickle.dump(df, open( "./save_pickle/result_df_others.p", "wb" ))

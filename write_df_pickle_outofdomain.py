@@ -9,7 +9,7 @@ print(rdBase.rdkitVersion)
 
 # setting
 tasks = ['delaney', 'sampl', 'lipo']
-percentages = {'delaney': 0.1, 'sampl': 0.2, 'lipo':0.025}
+percentages = {'delaney': 0.15, 'sampl': 0.3, 'lipo':0.04}
 model_name = '_attentivefp_'
 nums = ['_1', '_2', '_3', '_4', '_5']
 props = ['mu', 'alpha', 'homo', 'lumo', 'gap', 'r2', 'zpve', 'u0', 'u298', 'h298', 'g298', 'cv']

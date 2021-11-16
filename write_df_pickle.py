@@ -11,6 +11,7 @@ print(rdBase.rdkitVersion)
 tasks = ['qm9']
 model_name = '_attentivefp_'
 nums = ['_1', '_2', '_3', '_4', '_5']
+props = ['mu', 'alpha', 'homo', 'lumo', 'gap', 'r2', 'zpve', 'u0', 'u298', 'h298', 'g298', 'cv']
 
 # make df from pickle
 df = {}
@@ -31,17 +32,18 @@ with open('./save_pickle/raw_train_df.p', 'rb') as f:
 
 for task_name in df:
     for num in nums:
-        for prop in df[task_name][num].columns:
-            if prop == 'mols':
-                break
+        for prop in props:
             mean = raw_train_df[prop].mean()
             std = raw_train_df[prop].std()
             df[task_name][num]['pred ' + prop] = df[task_name][num]['pred ' + prop]*std + mean
-            df[task_name][num][prop] = df[task_name][num][prop]*std + mean
+            if 'qm9' in task_name:
+                df[task_name][num][prop] = df[task_name][num][prop]*std + mean
 
 
 # divide values by nelec or natom
 for task_name in df:
+    if 'qm9' not in task_name:
+        break
     for num in nums:
         df[task_name][num]['Nelec'] = df[task_name][num]['mols'].apply(get_nelec)
         df[task_name][num]['Natom'] = df[task_name][num]['mols'].apply(get_natom)
@@ -64,13 +66,13 @@ for task_name in df:
 
 # selection using Tanimoto Coefficients
 time_MSMK = time.time()
-df['qm9']['_1'] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxsum', vector='_maccs')
+df['qm9']['_1'] = greedy_baseline(df['qm9']['_1'], 0.01, 'Tanimoto', rule='maxsum', vector='_maccs')
 time_MMMK = time.time()
-df['qm9']['_1'] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxmin', vector='_maccs')
+df['qm9']['_1'] = greedy_baseline(df['qm9']['_1'], 0.01, 'Tanimoto', rule='maxmin', vector='_maccs')
 time_MSEF = time.time()
-df['qm9']['_1'] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxsum', vector='_ecfp')
+df['qm9']['_1'] = greedy_baseline(df['qm9']['_1'], 0.01, 'Tanimoto', rule='maxsum', vector='_ecfp')
 time_MMEF = time.time()
-df['qm9']['_1'] = greedy_baseline(df[task_name][num], 0.01, 'Tanimoto', rule='maxmin', vector='_ecfp')
+df['qm9']['_1'] = greedy_baseline(df['qm9']['_1'], 0.01, 'Tanimoto', rule='maxmin', vector='_ecfp')
 time_bs = time.time()
 print('MSMK', time_MMMK-time_MSMK)
 print('MMMK', time_MSEF-time_MMMK)

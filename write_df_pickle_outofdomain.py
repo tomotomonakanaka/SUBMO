@@ -20,9 +20,9 @@ for task_name in tasks:
         df[task_name] = {}
         df[task_name + '_normalize'] = {}
     for num in nums:
-        with open('./save_pickle/'+task_name+model_name+task_name+'_relu'+num+'_data.pickle', 'rb') as f:
+        with open('./save_pickle/'+task_name+model_name+'qm9'+'_relu'+num+'_data.pickle', 'rb') as f:
             df[task_name][num] = pickle.load(f)
-        with open('./save_pickle/'+task_name+model_name+task_name+'_normalize_relu'+num+'_data.pickle', 'rb') as f:
+        with open('./save_pickle/'+task_name+model_name+'qm9'+'_normalize_relu'+num+'_data.pickle', 'rb') as f:
             df[task_name + '_normalize'][num] = pickle.load(f)
 
 

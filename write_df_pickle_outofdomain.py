@@ -65,6 +65,8 @@ for task_name in df:
     print('MMEF', time_bs-time_MMEF)
 
 for task_name in df:
+    if 'normalize' in task_name:
+        continue
     for num in nums:
         time_WS = time.time()
         df[task_name][num] = greedy_wasserstein(df[task_name][num], percentages[task_name])

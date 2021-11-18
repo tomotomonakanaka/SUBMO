@@ -9,7 +9,7 @@ print(rdBase.rdkitVersion)
 
 # setting
 tasks = ['delaney', 'sampl', 'lipo']
-percentages = {'delaney': 0.15, 'delaney_normalize':0.15,  'sampl': 0.3, 'sampl_normalize':0.3, 'lipo':0.04, 'lipo_normalize':0.04}
+percentages = {'delaney': 0.15, 'delaney_normalize':0.15,  'sampl': 0.3, 'sampl_normalize':0.3, 'lipo':0.035, 'lipo_normalize':0.035}
 model_name = '_attentivefp_'
 nums = ['_1', '_2', '_3', '_4', '_5']
 props = ['mu', 'alpha', 'homo', 'lumo', 'gap', 'r2', 'zpve', 'u0', 'u298', 'h298', 'g298', 'cv']
@@ -73,6 +73,9 @@ for task_name in df:
         print('Wasser', time_end-time_WS)
 
 
+# save
+pickle.dump(df, open( "./save_pickle/result_df_others.p", "wb" ))
+
 # add random ranking
 for task_name in df:
     n_mols = len(df[task_name]['_1'])
@@ -83,8 +86,8 @@ for task_name in df:
         random_rank[select] = np.arange(n_select)
         random_rank = list(map(int, random_rank))
         np.random.seed(int(num[-1]))
-        for task_name in df:
-            df[task_name][num]['random_ranking'] = random_rank
+        df[task_name][num]['random_ranking'] = random_rank
+        df[task_name+'_normalize'][num]['random_ranking'] = random_rank
 
 # save
 pickle.dump(df, open( "./save_pickle/result_df_others.p", "wb" ))

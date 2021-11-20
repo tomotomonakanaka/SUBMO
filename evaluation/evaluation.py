@@ -82,12 +82,14 @@ def dfs2wds(df, methods, n_select, properties):
     return distances
 
 
-def df2mpd(df, methods, n_select):
+def df2mpd(df, methods, n_select, task='None'):
     mpd = pd.DataFrame([])
     for fingerprint in ['maccs', 'ecfp']:
         fp_mpd = pd.DataFrame([])
         fp_mpd['method'] = methods
         fp_mpd['fingerprint'] = fingerprint
+        if task != 'None':
+            fp_mpd['task'] = task
         fp_mpd_list = []
         for method in methods:
             fps = list(df[df[method] < n_select][fingerprint])
@@ -102,11 +104,11 @@ def df2mpd(df, methods, n_select):
     return mpd
 
 
-def dfs2mpd(df, methods, n_select):
+def dfs2mpd(df, methods, n_select, task='None'):
     # df is e.g., df['qm9']
     mpds = pd.DataFrame([])
     for num in df.keys():
-        mpd = df2mpd(df[num], methods, n_select)
+        mpd = df2mpd(df[num], methods, n_select, task)
         mpd['num'] = num
         mpds = pd.concat([mpds, mpd])
     return mpds

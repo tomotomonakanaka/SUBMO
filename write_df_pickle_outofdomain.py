@@ -75,11 +75,10 @@ for task_name in df:
         print('Wasser', time_end-time_WS)
 
 
-# save
-pickle.dump(df, open( "./save_pickle/result_df_others.p", "wb" ))
-
 # add random ranking
 for task_name in df:
+    if 'normalize' in task_name:
+        continue
     n_mols = len(df[task_name]['_1'])
     n_select = int(n_mols*percentages[task_name])
     for num in nums:

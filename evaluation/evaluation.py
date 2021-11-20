@@ -89,7 +89,7 @@ def df2mpd(df, methods, n_select, task='None'):
         fp_mpd['method'] = methods
         fp_mpd['fingerprint'] = fingerprint
         if task != 'None':
-            fp_mpd['task'] = task
+            fp_mpd['fingerprint'] = task+'_'+fingerprint
         fp_mpd_list = []
         for method in methods:
             fps = list(df[df[method] < n_select][fingerprint])

@@ -37,6 +37,7 @@ def eval_one_epoch(loader, gnn_net, loss_fn, task, model_name, data_len,
         preds = None
         trues = None
         embeddings = None
+        time_GNN_eval = time.time()
         for bg, labels in loader:
             atom_feats = bg.ndata.pop('h').to(device)
             if model_name == 'gcn':
@@ -61,6 +62,8 @@ def eval_one_epoch(loader, gnn_net, loss_fn, task, model_name, data_len,
                 preds = np.append(preds, pred_cpu, axis=0)
                 trues = np.append(trues, true_cpu, axis=0)
                 embeddings = np.append(embeddings, embedding_cpu, axis=0)
+        time_GNN_eval_end = time.time()
+        print(time_GNN_eval_end-time_GNN_eval)
         epoch_loss /= data_len
         print(f"valid {task} LOSS: {epoch_loss:.3f}")
 

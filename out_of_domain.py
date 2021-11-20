@@ -15,7 +15,7 @@ def parse_args():
     parser.add_argument('--relu', action='store_true', default=False)
     parser.add_argument('--task_targeted', default='delaney')
     parser.add_argument('--task_trained', default='qm9')
-    parser.add_argument('--model', default='gcn')
+    parser.add_argument('--model', default='attentivefp')
     parser.add_argument('--percentage', default=0.10, type=float)
     args = parser.parse_args()
     return args

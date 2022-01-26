@@ -29,3 +29,6 @@ $ ./experiment/run_experiment.sh
 ```
 
 The results can be seen by running the cells in `eval_wdud_mpd.ipynb`.
+
+## License
+The source code is licensed MIT.

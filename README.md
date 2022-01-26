@@ -10,7 +10,7 @@ $ conda install -y -c conda-forge rdkit
 $ pip install -r requirements.txt
 $ mkdir save_pickle
 ```
-We have confirmed the behavior with the following versions.
+We have confirmed the implementation with the following versions.
 ```
 conda: 4.8.4
 python: 3.7.10

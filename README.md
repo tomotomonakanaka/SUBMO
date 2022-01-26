@@ -1,5 +1,6 @@
 # SubMo-GNN
 This repository is the implementation of [Selecting molecules with diverse structures and properties by maximizing submodular functions of descriptors learned with graph neural networks](https://www.nature.com/articles/s41598-022-04967-9).
+![image (3)](https://user-images.githubusercontent.com/45445358/151144208-13d07213-0215-4418-9de9-fe2bfbf90479.png)
 ![overview](https://user-images.githubusercontent.com/45445358/151129384-4db3bc73-6cb6-4ac0-a236-f7bf9deb8ab7.png)
 
 ## Setup

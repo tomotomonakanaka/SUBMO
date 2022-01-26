@@ -1,4 +1,6 @@
 # SUBMO
+![overview](https://user-images.githubusercontent.com/45445358/151129384-4db3bc73-6cb6-4ac0-a236-f7bf9deb8ab7.png)
+
 ## Setup
 The required modules can be obtained by the following commands.
 For torch and dgl installation, change the contents of the `requirements.txt` file according to your environment.

@@ -4,7 +4,7 @@ This repository is the implementation of [Selecting molecules with diverse struc
 
 ## Setup
 The required modules can be obtained by the following commands.
-For torch and dgl installation, change the contents of the `requirements.txt` file according to your environment.
+For torch and dgl installation, change `requirements.txt` according to your environment.
 ```
 $ conda install -y -c conda-forge rdkit
 $ pip install -r requirements.txt
